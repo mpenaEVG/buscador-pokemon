@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokedex Explorador Pokémon</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header>
+    <h1>Explorador Pokémon<span>Pokémon <img src="images/pokeball.jpg" alt="Logo Pokémon" class="logo"></h1>
+    <p>Encuentra y estudia Pokémon para completar tu Pokedex.</p>
+  </header>
+
+  <main>
+    <section id="search-section">
+      <h2>Busca un Pokémon</h2>
+      <input type="text" id="pokemon-input" placeholder="Escribe el nombre de un Pokémon (ej. ditto)">
+      <button id="search-btn" onclick="buscarSinAsync()">Buscar</button>
+    </section>
+
+    <section id="result-section" class="hidden">
+      <h2>Información del Pokémon</h2>
+      <div id="pokemon-data">
+        <!-- Aquí se mostrará la información del Pokémon -->
+      </div>
+    </section>
+
+    <section id="collection-section" class="hidden">
+      <h2>Mi Colección de Pokémon</h2>
+      <div id="collection-list">
+        <!-- Aquí se mostrarán los Pokémon capturados -->
+      </div>
+      <button id="view-collection-btn">Ver colección</button>
+
+    </section>
+    
+  </main>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
