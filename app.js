@@ -2,7 +2,6 @@
 
    const pokemonInput = document.getElementById('pokemon-input')
    const datosPokemon = document.getElementById('pokemon-data')
-   const listaColeccion = document.getElementById('collection-list')
 
   try{
     
@@ -58,7 +57,6 @@
 function buscarSinAsync(){
    const pokemonInput = document.getElementById('pokemon-input')
    const datosPokemon = document.getElementById('pokemon-data')
-   const listaColeccion = document.getElementById('collection-list')
    let fugitivo = pokemonInput.value.toLowerCase()
 
 
@@ -104,9 +102,65 @@ function buscarSinAsync(){
           })
       })
 
-     
-
       .catch(error => {
         console.log(error)
       })
+}
+
+
+function buscarConJquery() {
+  const pokemonInput = $('#pokemon-input')
+  const datosPokemon = $('#pokemon-data')
+  const fugitivo = pokemonInput.val().toLowerCase()
+
+  $.ajax({
+    url: 'https://pokeapi.co/api/v2/pokemon',
+    method: 'GET',
+    success: function (pokeapi) {
+      const pokemon = pokeapi.results.find(function (dato) {
+        return dato.name.toLowerCase() === fugitivo;
+      })
+
+      if (!pokemon) {
+        datosPokemon.html(`<p style="color:red;">Pokemon ${fugitivo} no encontrado</p>`);
+        return; 
+      }
+
+      $.ajax({
+        url: pokemon.url,
+        method: 'GET',
+        success: function (datos) {
+          const { base_experience, height, weight } = datos;
+          const urlFront = datos.sprites.front_shiny;
+          const urlBack = datos.sprites.back_shiny;
+          const grito = datos.cries.legacy;
+
+          datosPokemon.html(`
+            <h3>${pokemon.name.toUpperCase()}</h3>
+            <img src="${urlFront}" style="width: 200px; height:200px;">
+            <img src="${urlBack}" style="width: 200px; height:200px;">
+            <p><strong>Experiencia base:</strong> ${base_experience}</p>
+            <p><strong>Altura:</strong> ${height} cm</p>
+            <p><strong>Peso:</strong> ${weight} kg</p>
+            <button id="play" style="width: 100px; height:50px; background-color:yellow; border:1px solid yellow; border-radius:5px;">Sonido</button>
+            <audio id="audio">
+              <source src="${grito}" type="audio/mpeg">
+              Tu navegador no soporta el elemento de audio.
+            </audio>
+          `);
+
+          // Reproducir sonido al hacer clic en el botón
+          $('#play').click(function () {
+            $('#audio')[0].play(); // [0] convierte el objeto jQuery a un elemento DOM
+          });
+        },
+        error: function (error) {
+          console.error('Error al obtener detalles del Pokémon:', error);
+        },
+      });
+    },
+    error: function (error) {
+      console.error('Error al obtener la lista de Pokémon:', error);
+    },
+  });
 }
