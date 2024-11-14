@@ -8,6 +8,7 @@
 </head>
 <body>
 
+  <script src="aux.js"> </script>
   <header>
     <h1>Explorador Pokémon<span>Pokémon <img src="images/pokeball.jpg" alt="Logo Pokémon" class="logo"></h1>
     <p>Encuentra y estudia Pokémon para completar tu Pokedex.</p>
@@ -17,7 +18,7 @@
     <section id="search-section">
       <h2>Busca un Pokémon</h2>
       <input type="text" id="pokemon-input" placeholder="Escribe el nombre de un Pokémon (ej. ditto)">
-      <button id="search-btn" onclick="buscarConJquery()">Buscar</button>
+      <button id="search-btn" onclick="buscarPokemon()">Buscar</button>
     </section>
 
     <section id="result-section" class="hidden">
@@ -32,13 +33,12 @@
       <div id="collection-list">
         <!-- Aquí se mostrarán los Pokémon capturados -->
       </div>
-      <button id="view-collection-btn">Ver colección</button>
+      <button id="view-collection-btn" onclick="verColeccion()">Ver colección</button>
 
     </section>
     
   </main>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="app.js"></script>
 </body>
 </html>

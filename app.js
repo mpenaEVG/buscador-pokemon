@@ -30,11 +30,14 @@
             <p><strong>Experiencia base:</strong> ${base_experience}</p>
             <p><strong>Altura:</strong> ${height} cm</p>
             <p><strong>Peso:</strong> ${weight} kg</p>
-            <button id="play" style= "width:100px; height:50px; background-color:yellow; border:1px solid yellow; border-radius:5px;">Sonido</button>
+            <button id="play" style= "width:100px; height:50px; display:block; margin:3% 37%; background-color:yellow; border:1px solid yellow; border-radius:5px;">Sonido</button>
              <audio id="audio">
                 <source src="${grito}" type="audio/mpeg">
                 Tu navegador no soporta el elemento de audio.
-              </audio>`
+              </audio>
+
+            <button id="guardar" style="width:200px; height:50px; border:1px solid #00f7ff; background-color: #00f7ff; border-radius:5px;">Agregar a la colección</button>`
+
         
       const audio = document.getElementById('audio')
       const sonido = document.getElementById('play')
@@ -42,6 +45,19 @@
           audio.play()
       })
 
+      const guardar = document.getElementById('guardar')
+      guardar.addEventListener('click', () => {
+        let pokemons = JSON.parse(sessionStorage.getItem('pokemons')) || [];
+
+        const bicho = {
+          imagen: urlFront,
+          nombre: pokemon.name.toUpperCase(),
+          llanto: grito
+        }
+      await addPokemon(bicho)
+
+      })
+      
     }catch(error){
       console.log(error)
     }
@@ -114,7 +130,7 @@ function buscarConJquery() {
   const fugitivo = pokemonInput.val().toLowerCase()
 
   $.ajax({
-    url: 'https://pokeapi.co/api/v2/pokemon',
+    url: 'https://pokeapi.co/api/v2/pokemon?limit=1000',
     method: 'GET',
     success: function (pokeapi) {
       const pokemon = pokeapi.results.find(function (dato) {
