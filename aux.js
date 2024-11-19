@@ -1,8 +1,8 @@
-async function verColeccion() {
+async function verColeccion(pokemonFiltrados = null){
 
   const contenedor = document.getElementById('collection-list')
   
-  let pokemons = JSON.parse(sessionStorage.getItem('pokemons')) || []
+  let pokemons = pokemonFiltrados || JSON.parse(sessionStorage.getItem('pokemons')) || []
   contenedor.style.display = 'flex'
   contenedor.style.flexDirection = 'row'
   contenedor.style.flexWrap = 'wrap'
@@ -15,15 +15,15 @@ async function verColeccion() {
       pokemons.forEach(pokemon => {
 
           let name = document.createElement('h3')
-          name.textContent = pokemon.nombre
+          name.textContent = pokemon.name
           name.style.color = 'white'
 
           let imagen = document.createElement('img')
-          imagen.src = pokemon.imagen
-          imagen.alt = `Imagen de ${pokemon.nombre.toLowerCase()}`
+          imagen.src = pokemon.sprites.front_default
+          imagen.alt = `Imagen de ${pokemon.name.toLowerCase()}`
 
           let llanto = document.createElement('audio')
-          llanto.src = pokemon.llanto
+          llanto.src = pokemon.cries.legacy
           
           let boton = document.createElement('button')
           boton.textContent = 'sonido'
@@ -51,13 +51,13 @@ async function verColeccion() {
             let pokemons = JSON.parse(sessionStorage.getItem('pokemons')) || []
 
             // Filtra los Pokémon para excluir el que se quiere borrar
-            pokemons = pokemons.filter(p => p.nombre !== pokemon.nombre)
+            pokemons = pokemons.filter(p => p.name !== pokemon.name)
 
             // Actualiza sessionStorage con la nueva lista
             sessionStorage.setItem('pokemons', JSON.stringify(pokemons))
 
             // Actualiza la vista de la colección
-            await verColeccion()
+              await verColeccion(pokemons)
           })
         let pokemonCard = document.createElement('div')
         pokemonCard.style.display = 'flex'
@@ -80,24 +80,39 @@ async function verColeccion() {
   }
 }
 
-async function addPokemon(pokemon){
-  let pokemons = JSON.parse(sessionStorage.getItem('pokemons')) || []
-  const contenedor = document.getElementById('collection-list')
-  let contador = false
-  pokemons.forEach(element => {
+async function addPokemon(pokemon) {
+    let pokemons = JSON.parse(sessionStorage.getItem('pokemons')) || [];
+    const contenedor = document.getElementById('collection-list');
+    let contador = false;
 
-    if(element.nombre === pokemon.nombre)
-      contador = true
-    })
-    if(!contador){
-      pokemons.push(pokemon)
-    }else{
-      alert("Esta repetido")
+    // Verifica si el nombre del Pokémon ya está en la lista de la colección
+    pokemons.forEach(element => {
+        if (element.name === pokemon.nombre) {
+            contador = true;
+        }
+    });
+
+    if (contador) {
+        alert("Este Pokémon ya está en tu colección.");
+    } else {
+        // Si no está repetido, agrega el nuevo Pokémon
+        pokemons.push({
+            name: pokemon.nombre,  // Usar el nombre directamente
+            sprites: {
+                front_default: pokemon.imagen  // Usar la URL de la imagen
+            },
+            cries: {
+                legacy: pokemon.llanto  // Usar la URL del grito
+            }
+        });
+
+        // Actualiza sessionStorage con la nueva lista
+        sessionStorage.setItem('pokemons', JSON.stringify(pokemons));
+
+        // Actualiza la vista de la colección
+        await verColeccion();
     }
-  sessionStorage.setItem('pokemons',JSON.stringify(pokemons))
-  await verColeccion()
 }
-
  async function buscarPokemon() {
 
    const pokemonInput = document.getElementById('pokemon-input')
@@ -151,7 +166,7 @@ async function addPokemon(pokemon){
 
         const bicho = {
           imagen: urlFront,
-          nombre: pokemon.name.toUpperCase(),
+          nombre: pokemon.name,
           llanto: grito
         }
         await addPokemon(bicho)
@@ -197,6 +212,7 @@ async function autor() {
 
 async function opcionesTipos() {
   const selectTipos = document.getElementById('tipos')
+
   try{
 
     const response = await fetch("https://pokeapi.co/api/v2/type")
@@ -218,3 +234,32 @@ async function opcionesTipos() {
 
 opcionesTipos()
 
+
+async function filtrarPorTipos() {
+
+  const tipoSeleccionado = document.getElementById('tipos').value
+  const contenedor = document.getElementById('collection-list')
+
+  let pokemons = JSON.parse(sessionStorage.getItem('pokemons')) || []
+
+  if(!tipoSeleccionado){
+    contenedor.innerHTML = '<p style="color:red;">Selecciona un tipo válido</p>'
+    return
+  }
+
+  try{
+    const promesas = pokemons.map(async (pokemon) => {
+      const respuesta = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name.toLowerCase()}`)
+      return await respuesta.json()
+    })
+    const detalles = await Promise.all(promesas) 
+    console.log(detalles)
+    const pokemonFiltrados = detalles.filter(pokemon => {
+      return pokemon.types.some((tipo) => tipo.type.name == tipoSeleccionado)
+    })
+    console.log(pokemonFiltrados)
+    await verColeccion(pokemonFiltrados)
+  }catch(error){
+    console.error(error)
+  }
+}
