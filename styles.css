@@ -181,3 +181,58 @@ button {
 .btn-style:hover {
   background-color: #ff6347;
 }
+
+#autor{
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  margin: 1rem 37%;
+  margin-top: 1rem;
+  color: #000000;
+  background-color: #00f7ff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+}
+#gitInfo{
+    display: flex;
+    align-items: center;
+    background-color: rgb(26, 5, 49);
+    border-radius: 6px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil para el efecto de profundidad */
+    max-width: 200px;
+    margin: auto; /* Centrado del div */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Estilo para la imagen del avatar (perfil) */
+#gitInfo img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Avatar redondeado */
+    margin-right: 15px; /* Espacio entre la imagen y el nombre */
+    object-fit: cover; /* Ajuste de la imagen sin distorsionar */
+}
+
+/* Estilo para el título (h3) del nombre de usuario */
+#gitInfo h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: yellow ; /* Color similar al de GitHub para el texto */
+    margin: 0; /* Elimina márgenes innecesarios */
+}
+
+/* Estilo para el enlace al perfil de GitHub */
+#gitInfo a {
+    text-decoration: none; /* Elimina subrayado del enlace */
+    color: #0366d6; /* Color azul típico de los enlaces */
+    font-weight: 600;
+}
+
+/* Efecto hover para el enlace */
+#gitInfo a:hover {
+    text-decoration: underline; /* Subrayado cuando el enlace es hover */
+}
+

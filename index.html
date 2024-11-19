@@ -8,7 +8,6 @@
 </head>
 <body>
 
-  <script src="aux.js"> </script>
   <header>
     <h1>Explorador Pokémon<span>Pokémon <img src="images/pokeball.jpg" alt="Logo Pokémon" class="logo"></h1>
     <p>Encuentra y estudia Pokémon para completar tu Pokedex.</p>
@@ -36,9 +35,14 @@
       <button id="view-collection-btn" onclick="verColeccion()">Ver colección</button>
 
     </section>
-    
+    <section id=author>
+      <button id="autor" onclick="autor()">Autor</button>
+      <div id=gitInfo style="display: none;">
+      </div>
+    </section>
   </main>
 
+  <script src="aux.js" defer> </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </body>
 </html>

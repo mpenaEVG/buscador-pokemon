@@ -169,3 +169,28 @@ async function addPokemon(pokemon){
   }
 }
 
+async function autor() {
+    
+   const usuario = 'mpenaEVG'
+   const url = `https://api.github.com/users/${usuario}`
+   const divInfo = document.getElementById('gitInfo')
+
+  if(divInfo.style.display != 'none'){
+    divInfo.style.display = 'none'
+  }else{
+    divInfo.style.display = 'flex'
+  }
+
+  try{
+     let respuesta = await fetch(url)
+     let datos = await respuesta.json()
+
+     divInfo.innerHTML=`
+                <img src="${datos.avatar_url}">
+                <a href="${datos.html_url}"><h3>${datos.login}</h3></a>`
+  }catch(error){
+
+    console.error(error)
+    divInfo.innerHTML = '<p style="color:red">Error al cargar los datos</p>'
+  }   
+}
