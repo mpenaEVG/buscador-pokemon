@@ -187,10 +187,34 @@ async function autor() {
 
      divInfo.innerHTML=`
                 <img src="${datos.avatar_url}">
-                <a href="${datos.html_url}"><h3>${datos.login}</h3></a>`
+                <a target=_blank href="${datos.html_url}"><h3>${datos.login}</h3></a>`
   }catch(error){
 
     console.error(error)
     divInfo.innerHTML = '<p style="color:red">Error al cargar los datos</p>'
   }   
 }
+
+async function opcionesTipos() {
+  const selectTipos = document.getElementById('tipos')
+  try{
+
+    const response = await fetch("https://pokeapi.co/api/v2/type")
+    const datos = await response.json()
+
+    datos.results.forEach(tipo=> {
+
+      const option = document.createElement('option')
+      option.value = tipo.name
+      option.textContent = tipo.name.toUpperCase()
+      selectTipos.append(option)
+    })
+  }catch(error){
+    console.error(error)
+    selectTipos.innerHTML = '<option>Error al cargar los datos</option>'
+
+  }
+}
+
+opcionesTipos()
+
